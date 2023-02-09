@@ -1,5 +1,6 @@
 package com.rodrigoferreira.bookstoremanager.service;
 
+import com.rodrigoferreira.bookstoremanager.dto.BookDTO;
 import com.rodrigoferreira.bookstoremanager.dto.MessageResponseDTO;
 import com.rodrigoferreira.bookstoremanager.entity.Book;
 import com.rodrigoferreira.bookstoremanager.repository.BookRepository;
@@ -17,8 +18,18 @@ public class BookService {
         this.bookRepository = bookRepository;
     }
 
-    public MessageResponseDTO create(@RequestBody Book book) {
-        Book saveBook = bookRepository.save(book);
+    public MessageResponseDTO create(@RequestBody BookDTO bookDTO) {
+
+        Book bookToSave = Book.builder()
+                .name(bookDTO.getName())
+                .pages(bookDTO.getPages())
+                .chapters(bookDTO.getChapters())
+                .author(bookDTO.getAuthor())
+                .build();
+
+
+
+        Book saveBook = bookRepository.save(bookToSave);
         return MessageResponseDTO.builder()
                 .message("Book created whit ID " + saveBook.getId())
                 .build();
